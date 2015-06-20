@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<config>
+  <enabled value="true" />
+  <index value="0" />
+  <server server="192.168.1.1" server_port="8388" bind_port="8388" />
+</config>
