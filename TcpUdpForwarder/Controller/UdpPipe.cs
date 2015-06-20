@@ -52,7 +52,14 @@ namespace TcpUdpForwarder.Controller
             lock(this)
             {
                 if (_handlers.ContainsKey(key))
+                {
+#if DEBUG
+                    try { Console.WriteLine("reuse udp handler: " + key); }
+                    catch { }
+#endif
+
                     return (Handler)_handlers[key];
+                }
                 Handler handler = new Handler();
                 _handlers.Add(key, handler);
                 handler._local = fromSocket;
@@ -60,6 +67,10 @@ namespace TcpUdpForwarder.Controller
                 handler._remoteEP = _serverEP;
                 handler.OnClose += handler_OnClose;
                 handler.Start();
+#if DEBUG
+                try { Console.WriteLine("create udp handler: " + key); }
+                catch { }
+#endif
                 return handler;
             }
         }
@@ -73,7 +84,7 @@ namespace TcpUdpForwarder.Controller
                 if (_handlers.ContainsKey(key))
                 {
 #if DEBUG
-                    try { Console.WriteLine("remove udp pipe"); }
+                    try { Console.WriteLine("remove udp handler: " + key); }
                     catch { }
 #endif
                     _handlers.Remove(key);
@@ -119,7 +130,7 @@ namespace TcpUdpForwarder.Controller
                     foreach (Handler handler in keys)
                     {
 #if DEBUG
-                        try { Console.WriteLine("remove expire: " + handler._remote.LocalEndPoint.ToString()); }
+                        try { Console.WriteLine("remove expired udp handler: " + handler._remote.LocalEndPoint.ToString()); }
                         catch { }
 #endif
                         string key = handler._localEP.ToString();
