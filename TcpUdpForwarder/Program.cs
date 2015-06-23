@@ -73,13 +73,7 @@ namespace TcpUdpForwarder
                 controller = new SSForwardController(config);
             }
             controller.Start();
-            Application.ThreadException += onException;
             Application.Run();
-        }
-
-        static void onException(object sender, System.Threading.ThreadExceptionEventArgs e)
-        {
-
         }
 
         static bool ParseArgs(string[] args, Hashtable _args)
