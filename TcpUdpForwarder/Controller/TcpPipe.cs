@@ -15,7 +15,7 @@ namespace TcpUdpForwarder.Controller
             this._server = server;
         }
 
-        public bool Handle(Socket socket)
+        public bool CreatePipe(Socket socket)
         {
             new Handler(_server).Start(socket);
             return true;
@@ -242,6 +242,8 @@ namespace TcpUdpForwarder.Controller
                     {
                         _local.Shutdown(SocketShutdown.Both);
                         _local.Close();
+                        _local = null;
+                        connetionRecvBuffer = null;
                     }
                     catch (Exception e)
                     {
@@ -254,6 +256,8 @@ namespace TcpUdpForwarder.Controller
                     {
                         _remote.Shutdown(SocketShutdown.Both);
                         _remote.Close();
+                        _remote = null;
+                        remoteRecvBuffer = null;
                     }
                     catch (SocketException e)
                     {

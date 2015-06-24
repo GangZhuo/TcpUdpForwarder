@@ -14,6 +14,7 @@ namespace TcpUdpForwarder.Model
         public bool enabled;
         public List<ServerInfo> servers;
         public int index;
+        public int mgmtPort;
 
         public Config()
         {
@@ -22,6 +23,7 @@ namespace TcpUdpForwarder.Model
             servers = new List<ServerInfo>();
             servers.Add(GetDefaultServer());
             index = 0;
+            mgmtPort = 4434;
         }
 
         public ServerInfo GetCurrentServer()
@@ -40,18 +42,33 @@ namespace TcpUdpForwarder.Model
                 config.isDefault = false;
                 XmlDocument xmldoc = new XmlDocument();
                 xmldoc.Load(CONFIG_FILE);
-                XmlNode n = xmldoc.SelectSingleNode("/config/enabled");
-                config.enabled = Convert.ToBoolean(n.Attributes["value"].Value);
+                XmlNode n;
+
+                n = xmldoc.SelectSingleNode("/config/enabled");
+                if (n != null) config.enabled = Convert.ToBoolean(n.Attributes["value"].Value);
+
                 n = xmldoc.SelectSingleNode("/config/index");
-                config.index = Convert.ToInt32(n.Attributes["value"].Value);
+                if (n != null) config.index = Convert.ToInt32(n.Attributes["value"].Value);
+
+                n = xmldoc.SelectSingleNode("/config/mgmt_port");
+                if (n != null) config.mgmtPort = Convert.ToInt32(n.Attributes["value"].Value);
+
                 config.servers.Clear();
                 XmlNodeList ns = xmldoc.SelectNodes("/config/server");
                 foreach (XmlNode sn in ns)
                 {
-                    ServerInfo s = new ServerInfo();
-                    s.server = sn.Attributes["server"].Value;
-                    s.serverPort = Convert.ToInt32(sn.Attributes["server_port"].Value);
-                    s.localPort = Convert.ToInt32(sn.Attributes["bind_port"].Value);
+                    ServerInfo s = GetDefaultServer();
+                    XmlAttribute attr;
+
+                    attr = sn.Attributes["server"];
+                    if (attr !=null) s.server = attr.Value;
+
+                    attr = sn.Attributes["server_port"];
+                    if (attr != null) s.serverPort = Convert.ToInt32(attr.Value);
+
+                    attr = sn.Attributes["bind_port"];
+                    if (attr != null) s.localPort = Convert.ToInt32(attr.Value);
+
                     config.servers.Add(s);
                 }
             }
@@ -81,6 +98,12 @@ namespace TcpUdpForwarder.Model
                     writer.WriteStartElement("index");
                     writer.WriteStartAttribute("value");
                     writer.WriteString(config.index.ToString());
+                    writer.WriteEndAttribute();
+                    writer.WriteEndElement();
+
+                    writer.WriteStartElement("mgmt_port");
+                    writer.WriteStartAttribute("value");
+                    writer.WriteString(config.mgmtPort.ToString());
                     writer.WriteEndAttribute();
                     writer.WriteEndElement();
 

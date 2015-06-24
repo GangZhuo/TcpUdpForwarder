@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1EF4C8DC-F5AB-4D95-B9BB-C3EF38823F2B}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>TcpUdpForwarder</RootNamespace>
     <AssemblyName>TcpUdpForwarder</AssemblyName>
@@ -37,12 +37,18 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\Management.cs" />
+    <Compile Include="Controller\MgmtListener.cs" />
+    <Compile Include="Controller\MgmtPipe.cs" />
     <Compile Include="Controller\UdpPipe.cs" />
     <Compile Include="Controller\UdpForwarder.cs" />
     <Compile Include="Controller\TcpForwarder.cs" />
@@ -50,6 +56,12 @@
     <Compile Include="Controller\TcpPipe.cs" />
     <Compile Include="Model\ServerInfo.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="Services\ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\ProjectInstaller.Designer.cs">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -57,7 +69,15 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Model\Config.cs" />
-    <Compile Include="Controller\SSForwardController.cs" />
+    <Compile Include="Controller\ForwarderController.cs" />
+    <Compile Include="Services\TcpUdpForwarder.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\TcpUdpForwarder.Designer.cs">
+      <DependentUpon>TcpUdpForwarder.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\SharedMemory.cs" />
+    <Compile Include="Utils\Utils.cs" />
     <Compile Include="View\ConfigForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -67,6 +87,9 @@
     <Compile Include="View\SSForwardView.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Services\ProjectInstaller.resx">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -81,6 +104,14 @@
     <Content Include="Resources\f16.png" />
     <Content Include="Resources\f20.png" />
     <Content Include="Resources\f24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="install.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="uninstall.bat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

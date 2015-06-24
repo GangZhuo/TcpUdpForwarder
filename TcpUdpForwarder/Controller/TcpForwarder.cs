@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
-using System.Net.NetworkInformation;
 using System.Net.Sockets;
 
 using TcpUdpForwarder.Model;
@@ -20,24 +19,9 @@ namespace TcpUdpForwarder.Controller
             this._pipe = new TcpPipe(_server);
         }
 
-        private bool CheckIfPortInUse(int port)
-        {
-            IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
-            IPEndPoint[] ipEndPoints = ipProperties.GetActiveTcpListeners();
-
-            foreach (IPEndPoint endPoint in ipEndPoints)
-            {
-                if (endPoint.Port == port)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
         public void Start()
         {
-            if (CheckIfPortInUse(_server.localPort))
+            if (Utils.Utils.CheckIfTcpPortInUse(_server.localPort))
                 throw new Exception("Port already in use");
 
             try
@@ -79,7 +63,7 @@ namespace TcpUdpForwarder.Controller
             try
             {
                 Socket conn = listener.EndAccept(ar);
-                if (_pipe.Handle(conn))
+                if (_pipe.CreatePipe(conn))
                     return;
                 // do nothing
             }

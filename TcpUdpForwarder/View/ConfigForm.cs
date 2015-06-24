@@ -15,13 +15,13 @@ namespace TcpUdpForwarder.View
 {
     public partial class ConfigForm : Form
     {
-        private SSForwardController controller;
+        private ForwarderController controller;
 
         // this is a copy of configuration that we are working on
         private Config _modifiedConfiguration;
         private int _oldSelectedIndex = -1;
 
-        public ConfigForm(SSForwardController controller)
+        public ConfigForm(ForwarderController controller)
         {
             this.Font = System.Drawing.SystemFonts.MessageBoxFont;
             InitializeComponent();

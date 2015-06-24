@@ -3,47 +3,48 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 
-using TcpUdpForwarder.Model;
-
 namespace TcpUdpForwarder.Controller
 {
-    public class UdpForwarder
+    public class MgmtListener
     {
+        ForwarderController controller;
         Socket _socket;
-        ServerInfo _server;
-        UdpPipe _pipe;
+        public int mgmtPort { get; private set; }
+        MgmtPipe _pipe;
 
-        public UdpForwarder(ServerInfo server)
+        public MgmtPipe Pipes
         {
-            _server = server;
-            this._pipe = new UdpPipe(_server);
+            get { return _pipe; }
+        }
+
+        public MgmtListener(ForwarderController controller, int mgmtPort)
+        {
+            this.controller = controller;
+            this.mgmtPort = mgmtPort;
+            _pipe = new MgmtPipe(controller);
         }
 
         public void Start()
         {
-            if (Utils.Utils.CheckIfUdpPortInUse(_server.localPort))
+            if (Utils.Utils.CheckIfTcpPortInUse(mgmtPort))
                 throw new Exception("Port already in use");
 
             try
             {
                 // Create a TCP/IP socket.
-                _socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 IPEndPoint localEndPoint = null;
-                localEndPoint = new IPEndPoint(IPAddress.Any, _server.localPort);
+                localEndPoint = new IPEndPoint(IPAddress.Loopback, mgmtPort);
 
                 // Bind the socket to the local endpoint and listen for incoming connections.
                 _socket.Bind(localEndPoint);
+                _socket.Listen(1024);
+
 
                 // Start an asynchronous socket to listen for connections.
-                Console.WriteLine("UDP listen on " + localEndPoint.ToString());
-                EndPoint remoteEP = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
-                byte[] buf = new byte[4096];
-                object[] state = new object[] {
-                    _socket,
-                    buf
-                };
-                _socket.BeginReceiveFrom(buf, 0, buf.Length, SocketFlags.None, ref remoteEP, new AsyncCallback(receiveFrom), state);
+                Console.WriteLine("Management listen on " + localEndPoint.ToString());
+                _socket.BeginAccept(new AsyncCallback(AcceptCallback), _socket);
             }
             catch (SocketException)
             {
@@ -61,16 +62,13 @@ namespace TcpUdpForwarder.Controller
             }
         }
 
-        private void receiveFrom(IAsyncResult ar)
+        public void AcceptCallback(IAsyncResult ar)
         {
-            object[] state = (object[])ar.AsyncState;
-            Socket socket = (Socket)state[0];
-            byte[] buf = (byte[])state[1];
-            EndPoint remoteEP = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
+            Socket listener = (Socket)ar.AsyncState;
             try
             {
-                int bytesRead = socket.EndReceiveFrom(ar, ref remoteEP);
-                if (_pipe.CreatePipe(buf, bytesRead, socket, remoteEP))
+                Socket conn = listener.EndAccept(ar);
+                if (_pipe.CreatePipe(conn))
                     return;
                 // do nothing
             }
@@ -85,8 +83,7 @@ namespace TcpUdpForwarder.Controller
             {
                 try
                 {
-                    remoteEP = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
-                    socket.BeginReceiveFrom(buf, 0, buf.Length, SocketFlags.None, ref remoteEP, new AsyncCallback(receiveFrom), state);
+                    listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
                 }
                 catch (ObjectDisposedException)
                 {

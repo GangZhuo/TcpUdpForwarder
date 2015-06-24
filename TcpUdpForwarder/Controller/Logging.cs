@@ -8,12 +8,12 @@ namespace TcpUdpForwarder.Controller
     {
         public static string LogFile;
 
-        public static bool OpenLogFile()
+        public static bool OpenLogFile(bool is_svc)
         {
             try
             {
                 string temppath = Path.GetTempPath();
-                LogFile = Path.Combine(temppath, "SSForward.log");
+                LogFile = Path.Combine(temppath, "SSForward" + (is_svc ? "_svc" : "") + ".log");
                 FileStream fs = new FileStream(LogFile, FileMode.Append);
                 StreamWriterWithTimestamp sw = new StreamWriterWithTimestamp(fs);
                 sw.AutoFlush = true;

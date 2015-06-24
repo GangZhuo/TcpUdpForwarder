@@ -39,7 +39,7 @@ namespace TcpUdpForwarder.Controller
             _handlers.Clear();
         }
 
-        public bool Handle(byte[] firstPacket, int length, Socket fromSocket, EndPoint fromEP)
+        public bool CreatePipe(byte[] firstPacket, int length, Socket fromSocket, EndPoint fromEP)
         {
             Handler handler = getHandler(fromEP, fromSocket);
             handler.Handle(firstPacket, length);
@@ -389,6 +389,9 @@ namespace TcpUdpForwarder.Controller
                     {
                         _remote.Shutdown(SocketShutdown.Both);
                         _remote.Close();
+                        _remote = null;
+                        remoteRecvBuffer = null;
+                        _packages = null;
                     }
                     catch (SocketException e)
                     {

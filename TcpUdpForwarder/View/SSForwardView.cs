@@ -11,7 +11,7 @@ namespace TcpUdpForwarder.View
 {
     public class SSForwardView
     {
-        private SSForwardController _controller;
+        private ForwarderController _controller;
         private NotifyIcon _notifyIcon;
         private ContextMenu _contextMenu;
         private MenuItem _enableItem;
@@ -21,7 +21,7 @@ namespace TcpUdpForwarder.View
         private ConfigForm _configForm;
         private bool _isFirstRun;
 
-        public SSForwardView(SSForwardController controller)
+        public SSForwardView(ForwarderController controller)
         {
             _controller = controller;
             LoadMenu();
@@ -161,7 +161,7 @@ namespace TcpUdpForwarder.View
             _notifyIcon.Icon = Icon.FromHandle(icon.GetHicon());
 
             // we want to show more details but notify icon title is limited to 63 characters
-            string text = "TCP(UDP) forwarder" + " " + SSForwardController.Version
+            string text = "TCP(UDP) forwarder" + " " + ForwarderController.Version
                 + "\n" + config.GetCurrentServer().FriendlyName();
             _notifyIcon.Text = text.Substring(0, Math.Min(63, text.Length));
         }

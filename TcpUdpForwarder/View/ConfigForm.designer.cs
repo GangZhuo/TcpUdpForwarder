@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.BindPortTextBox = new System.Windows.Forms.TextBox();
             this.BindPortLabel = new System.Windows.Forms.Label();
             this.IPLabel = new System.Windows.Forms.Label();
             this.ServerPortLabel = new System.Windows.Forms.Label();
             this.IPTextBox = new System.Windows.Forms.TextBox();
             this.ServerPortTextBox = new System.Windows.Forms.TextBox();
+            this.BindPortTextBox = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.OKButton = new System.Windows.Forms.Button();
             this.MyCancelButton = new System.Windows.Forms.Button();
@@ -59,12 +59,12 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.BindPortTextBox, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.BindPortLabel, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.IPLabel, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.ServerPortLabel, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.IPTextBox, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.ServerPortTextBox, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.BindPortTextBox, 1, 3);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(8, 21);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
@@ -77,16 +77,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(238, 84);
             this.tableLayoutPanel1.TabIndex = 0;
-            // 
-            // BindPortTextBox
-            // 
-            this.BindPortTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.BindPortTextBox.Location = new System.Drawing.Point(72, 58);
-            this.BindPortTextBox.MaxLength = 32;
-            this.BindPortTextBox.Name = "BindPortTextBox";
-            this.BindPortTextBox.Size = new System.Drawing.Size(160, 20);
-            this.BindPortTextBox.TabIndex = 10;
-            this.BindPortTextBox.WordWrap = false;
             // 
             // BindPortLabel
             // 
@@ -137,6 +127,16 @@
             this.ServerPortTextBox.Size = new System.Drawing.Size(160, 20);
             this.ServerPortTextBox.TabIndex = 1;
             this.ServerPortTextBox.WordWrap = false;
+            // 
+            // BindPortTextBox
+            // 
+            this.BindPortTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.BindPortTextBox.Location = new System.Drawing.Point(72, 58);
+            this.BindPortTextBox.MaxLength = 32;
+            this.BindPortTextBox.Name = "BindPortTextBox";
+            this.BindPortTextBox.Size = new System.Drawing.Size(160, 20);
+            this.BindPortTextBox.TabIndex = 10;
+            this.BindPortTextBox.WordWrap = false;
             // 
             // panel2
             // 
