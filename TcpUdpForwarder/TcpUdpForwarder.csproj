@@ -76,7 +76,6 @@
     <Compile Include="Services\TcpUdpForwarder.Designer.cs">
       <DependentUpon>TcpUdpForwarder.cs</DependentUpon>
     </Compile>
-    <Compile Include="Utils\SharedMemory.cs" />
     <Compile Include="Utils\Utils.cs" />
     <Compile Include="View\ConfigForm.cs">
       <SubType>Form</SubType>

@@ -401,6 +401,7 @@ namespace TcpUdpForwarder.Controller
                 if (reportClose && OnClose != null)
                 {
                     OnClose(this, new EventArgs());
+                    OnClose = null;
                 }
             }
         }

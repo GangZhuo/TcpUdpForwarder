@@ -202,7 +202,14 @@ namespace TcpUdpForwarder.Controller
                 }
             }
             if (OnClose != null)
+            {
                 OnClose(this, new EventArgs());
+                OnClose = null;
+            }
+            if(OnStart != null)
+            {
+                OnStart = null;
+            }
         }
     }
 }
