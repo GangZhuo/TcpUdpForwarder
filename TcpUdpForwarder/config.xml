@@ -2,5 +2,6 @@
 <config>
   <enabled value="true" />
   <index value="0" />
+  <mgmt_port value="4434" />
   <server server="192.168.1.1" server_port="8388" bind_port="8388" />
 </config>
