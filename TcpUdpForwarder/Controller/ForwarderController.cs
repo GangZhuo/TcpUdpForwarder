@@ -92,9 +92,7 @@ namespace TcpUdpForwarder.Controller
                 {
                     if (_mgmt == null)
                     {
-                        _mgmt = new Management(this, _config.mgmtPort);
-                        _mgmt.OnClose += _mgmt_OnClose;
-                        _mgmt.Start();
+                        ReConnectMgmt();
                     }
                     else
                     {
@@ -128,7 +126,29 @@ namespace TcpUdpForwarder.Controller
 
         private void _mgmt_OnClose(object sender, EventArgs e)
         {
-            ReportError(new Exception("Can't connect to service"));
+            //ReportError(new Exception("Can't connect to service"));
+            ReConnectMgmt();
+        }
+
+        void _mgmt_OnStart(object sender, EventArgs e)
+        {
+            ReportConfigChanged();
+        }
+
+        void ReConnectMgmt()
+        {
+            if (_mgmt != null)
+            {
+                _mgmt.OnStart -= _mgmt_OnStart;
+                _mgmt.OnClose -= _mgmt_OnClose;
+                _mgmt.Close();
+                _mgmt = null;
+            }
+            _mgmt = new Management(this, _config.mgmtPort);
+            _mgmt.OnStart += _mgmt_OnStart;
+            _mgmt.OnClose += _mgmt_OnClose;
+            _mgmt.Start();
+            Console.WriteLine("Connet to 127.0.0.1:" + _config.mgmtPort);
         }
 
         public void ReportError(Exception e)

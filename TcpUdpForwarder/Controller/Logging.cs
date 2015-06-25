@@ -13,7 +13,7 @@ namespace TcpUdpForwarder.Controller
             try
             {
                 string temppath = Path.GetTempPath();
-                LogFile = Path.Combine(temppath, "SSForward" + (is_svc ? "_svc" : "") + ".log");
+                LogFile = Path.Combine(temppath, "TcpUdpForwarder.log");
                 FileStream fs = new FileStream(LogFile, FileMode.Append);
                 StreamWriterWithTimestamp sw = new StreamWriterWithTimestamp(fs);
                 sw.AutoFlush = true;
