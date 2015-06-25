@@ -56,19 +56,25 @@ namespace TcpUdpForwarder.View
 
         private void _controller_Errored(object sender, System.IO.ErrorEventArgs e)
         {
-            MessageBox.Show(e.GetException().ToString(), String.Format("TCP(UDP) forwarder Error: {0}", e.GetException().Message));
+            ShowBalloon("TCP(UDP) forwarder error", e.GetException().Message, ToolTipIcon.Error);
+            //MessageBox.Show(e.GetException().ToString(), String.Format("TCP(UDP) forwarder Error: {0}", e.GetException().Message));
         }
 
         private void ShowFirstTimeBalloon()
         {
             if (_isFirstRun)
             {
-                _notifyIcon.BalloonTipTitle = "TCP(UDP) forwarder is here";
-                _notifyIcon.BalloonTipText = "You can turn on/off in the context menu";
-                _notifyIcon.BalloonTipIcon = ToolTipIcon.Info;
-                _notifyIcon.ShowBalloonTip(0);
+                ShowBalloon("TCP(UDP) forwarder is here", "You can turn on/off in the context menu", ToolTipIcon.Info);
                 _isFirstRun = false;
             }
+        }
+
+        private void ShowBalloon(string title, string text, ToolTipIcon icon = ToolTipIcon.Info)
+        {
+            _notifyIcon.BalloonTipTitle = title;
+            _notifyIcon.BalloonTipText = text;
+            _notifyIcon.BalloonTipIcon = icon;
+            _notifyIcon.ShowBalloonTip(0);
         }
 
         private void LoadCurrentConfiguration()

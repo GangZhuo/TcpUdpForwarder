@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SSForward")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("TCP(UDP) Forwarder")]
+[assembly: AssemblyDescription("Forward tcp(udp) package to a remote server")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SSForward")]
+[assembly: AssemblyProduct("TCP(UDP) Forwarder")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
